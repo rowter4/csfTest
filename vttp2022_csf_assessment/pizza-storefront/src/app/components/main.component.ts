@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { DetailsForm, PizzaOrder } from '../models';
 import { PizzaService } from '../pizza.service';
+import { MainService } from './main.service';
 
 const SIZES: string[] = [
   "Personal - 6 inches",
@@ -44,10 +45,6 @@ export class MainComponent implements OnInit {
       comments: this.fb.control('', [Validators.required]),
     })
 
-    // this.detailsForm = this.fb.group({
-    //   name: this.fb.control('Imaan Rowter', [Validators.required]),
-    //   email: this.fb.control('nadzir.4@gmail.com', [Validators.required, Validators.email]),
-    // })
   }
 
   updateSize(size: string) {
@@ -61,14 +58,14 @@ export class MainComponent implements OnInit {
     const pizzaOrder: PizzaOrder = this.pizzaForm.value as PizzaOrder
 
     this.pizzaSvc.createOrder(pizzaOrder)
-    // .then(result => {
-    //   console.info(">>> result :", result)
-    // })
-    // .catch(error => {
-    //   console.info(">>>>> error : ", error)
-    // })
+    .then(result => {
+      console.info(">>> result :", result)
+    })
+    .catch(error => {
+      console.info(">>>>> error : ", error)
+    })
 
-    this.router.navigate([`order/${this.pizzaForm.value.email}`])
+    this.router.navigate([`orders/${this.pizzaForm.value.email}`])
   }
 
   getDetails() {
@@ -79,9 +76,10 @@ export class MainComponent implements OnInit {
     }
 
     console.info(">>>> get Details pressed", this.detailsForm)
+    console.info(">>>> get Details email", this.detailsForm.email)
     this.pizzaSvc.getOrders(this.detailsForm.email)
       .then(result => {
-        console.info(">>> result :", result)
+        console.info(">>> result getOrders :", result)
         this.orderList = result
       })
       .catch(error => {
@@ -89,7 +87,7 @@ export class MainComponent implements OnInit {
       })
 
 
-    this.router.navigate([`order/${this.detailsForm.email}`])
+    this.router.navigate([`orders/${this.detailsForm.email}`])
   }
 
 }

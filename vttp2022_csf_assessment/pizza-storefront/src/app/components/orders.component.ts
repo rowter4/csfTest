@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
+import { MainService } from './main.service';
 
 @Component({
   selector: 'app-orders',
@@ -8,9 +9,13 @@ import { Component, OnInit } from '@angular/core';
 })
 export class OrdersComponent implements OnInit {
 
-  constructor(private http: HttpClient) { }
+  order : [] = []
+
+  constructor(private http: HttpClient, private mainSvc: MainService) { }
 
   ngOnInit(): void {
+    this.order = this.mainSvc.orderList
+    console.info(">>>>> order list ", this.order)
   }
 
 }

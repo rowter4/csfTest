@@ -9,10 +9,11 @@ import { OrdersComponent } from './components/orders.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { PizzaService } from './pizza.service';
 import { HttpClientModule } from '@angular/common/http';
+import { MainService } from './components/main.service';
 
 const appPath: Routes = [
   {path: '', component: MainComponent},
-  {path: 'order/:email',component: OrdersComponent },
+  {path: 'orders/:email',component: OrdersComponent },
   {path: '**', redirectTo:'/', pathMatch:'full'}
 ]
 @NgModule({
@@ -29,7 +30,7 @@ const appPath: Routes = [
     HttpClientModule
   ],
 
-  providers: [ PizzaService ],
+  providers: [ PizzaService, MainService ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

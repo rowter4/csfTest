@@ -1,7 +1,12 @@
 package vttp2022.assessment.csf.orderbackend.models;
 
+import java.io.StringReader;
 import java.util.LinkedList;
 import java.util.List;
+
+import jakarta.json.Json;
+import jakarta.json.JsonObject;
+import jakarta.json.JsonReader;
 
 // IMPORTANT: You can add to this class, but you cannot delete its original content
 
@@ -40,4 +45,32 @@ public class Order {
 
 	public void setComments(String comments) { this.comments = comments; }
 	public String getComments() { return this.comments; }
+
+	public static Order create(String json) {
+
+        JsonReader reader = Json.createReader(new StringReader(json));
+        JsonObject data = reader.readObject();
+
+        final Order ord = new Order();
+
+        ord.setOrderId(0);
+        ord.setEmail(data.getString("email"));
+		ord.setSize(data.getInt("size"));
+		ord.setSauce(data.getString("sauce"));
+		ord.setThickCrust(data.getBoolean("thick_crust"));
+		ord.setToppings(data.getString("toppings"));
+		ord.setComments(data.getString("comments"));      
+
+        return ord;
+    }
+
+	private void setToppings(String string) {
+
+	}
+	public JsonObject toJson() {
+        return Json.createObjectBuilder()
+            .add("name", name)
+            .add("email", email)
+            .build();
+    }
 }

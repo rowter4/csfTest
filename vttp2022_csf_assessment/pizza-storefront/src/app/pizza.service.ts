@@ -23,22 +23,18 @@ export class PizzaService {
         this.http.post<any>('/api/order', payload, {headers}).pipe()
     )
 
-    // return ("hello");
-
   }
 
   // GET /api/order/<email>/all
   // Add any required parameters or return type
   getOrders(email: string) {
 
-    const params = new HttpParams()
-                  .set("email", email)
+    const params = new HttpParams().set("email", email)
                   
     return firstValueFrom(
-      this.http.get<any>(`/api/order/${email}/all`, { params })
+      this.http.get<any>(`/api/order/${email}/all`)
     )
 
-    // return ("get Order response");
   }
 
 }
