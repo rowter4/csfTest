@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { DetailsForm } from '../models';
+import { DetailsForm, PizzaOrder } from '../models';
+import { PizzaService } from '../pizza.service';
 
 const SIZES: string[] = [
   "Personal - 6 inches",
@@ -11,8 +12,8 @@ const SIZES: string[] = [
 ]
 
 const PizzaToppings: string[] = [
-    'chicken', 'seafood', 'beef', 'vegetables',
-    'cheese', 'arugula', 'pineapple'
+  'chicken', 'seafood', 'beef', 'vegetables',
+  'cheese', 'arugula', 'pineapple'
 ]
 
 @Component({
@@ -26,9 +27,11 @@ export class MainComponent implements OnInit {
 
   pizzaForm!: FormGroup
   detailsForm !: DetailsForm
-  
 
-  constructor(private fb: FormBuilder, private router : Router) {}
+  orderList : [] = []
+
+  constructor(private fb: FormBuilder, private router: Router,
+    private pizzaSvc: PizzaService) { }
 
   ngOnInit(): void {
     this.pizzaForm = this.fb.group({
@@ -54,7 +57,18 @@ export class MainComponent implements OnInit {
   processOrder() {
     console.info(">>>>> order button ")
     console.info(">>>> form value", this.pizzaForm.value)
-    this.router.navigate( [`order/${this.pizzaForm.value.email}`])
+
+    const pizzaOrder: PizzaOrder = this.pizzaForm.value as PizzaOrder
+
+    this.pizzaSvc.createOrder(pizzaOrder)
+    // .then(result => {
+    //   console.info(">>> result :", result)
+    // })
+    // .catch(error => {
+    //   console.info(">>>>> error : ", error)
+    // })
+
+    this.router.navigate([`order/${this.pizzaForm.value.email}`])
   }
 
   getDetails() {
@@ -65,7 +79,17 @@ export class MainComponent implements OnInit {
     }
 
     console.info(">>>> get Details pressed", this.detailsForm)
-    this.router.navigate( [`order/${this.detailsForm.email}`])
+    this.pizzaSvc.getOrders(this.detailsForm.email)
+      .then(result => {
+        console.info(">>> result :", result)
+        this.orderList = result
+      })
+      .catch(error => {
+        console.info(">>>>> error : ", error)
+      })
+
+
+    this.router.navigate([`order/${this.detailsForm.email}`])
   }
 
 }
