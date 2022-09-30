@@ -6,8 +6,8 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class AppConfig {
 
-	// @Value("${SPRING_DATASOURCE_PASSWORD}")
-	// private String password;
+	@Value("${SPRING_DATASOURCE_PASSWORD}")
+	private String password;
 
 
 }
